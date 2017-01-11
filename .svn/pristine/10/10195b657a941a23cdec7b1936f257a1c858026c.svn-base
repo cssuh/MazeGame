@@ -1,0 +1,9 @@
+package falstad;
+
+import generation.Order;
+
+public class OrderStub extends MazeController implements Order {
+	// what do I need in the order stub?
+	// How does MazeController interact with MazeFactory?
+	
+}

@@ -1,0 +1,79 @@
+package generation;
+
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import falstad.MazeApplication;
+import falstad.StubOrder;
+
+public class MazeFactoryTest {
+
+	private MazeFactory factory;
+	private MazeFactory factoryTrue;
+	private MazeFactory factoryFalse;
+	
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+	}
+
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+	}
+
+	@Before
+	public void setUp() throws Exception {
+		
+		factory = new MazeFactory();
+		factoryTrue = new MazeFactory(true);
+		factoryFalse = new MazeFactory(false);
+		
+		MazeFactory factory = new MazeFactory();
+		Order stub = new StubOrder();
+		stub.getBuilder();
+		factory.order(stub);
+		
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testMazeFactory() {
+		// test constructors
+		assertNotNull(factory);
+		assertNotNull(factoryTrue);
+		assertNotNull(factoryFalse);
+	
+	}
+//
+//	@Test
+//	public void testMazeFactoryBoolean() {
+//		fail("Not yet implemented");
+//	}
+
+	@Test
+	public void testOrder() {
+		// need to call Order.deliver(MazeConfiguration mazeConfig
+		
+		//need StubOrder in this method to test it
+		
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testCancel() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testWaitTillDelivered() {
+		fail("Not yet implemented");
+	}
+
+}

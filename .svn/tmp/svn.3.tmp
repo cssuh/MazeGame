@@ -1,0 +1,112 @@
+package generation;
+
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import falstad.MazeApplication;
+import falstad.StubOrder;
+import generation.Order.Builder;
+
+public class MazeFactoryTest {
+
+	private MazeFactory factory;
+	private MazeFactory factoryTrue;
+	private MazeFactory factoryFalse;
+	private StubOrder stub;
+	MazeConfiguration configuration;
+	Cells cells;
+	Distance distance;
+	
+
+	@Before
+	public void setUp() throws Exception {
+		boolean det = true;
+		MazeFactory factory = new MazeFactory();
+		Order stub = new StubOrder(1, Builder.Prim, true);
+		factory.order(stub); 
+		factory.waitTillDelivered(); 
+		configuration = ((StubOrder)stub).getMazeConfiguration();
+		cells = ((MazeContainer)configuration).getMazecells();
+		distance = ((MazeContainer)configuration).getMazedists();
+
+	
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testMazeFactory() {
+		factory = new MazeFactory();
+		factoryTrue = new MazeFactory(true);
+		factoryFalse = new MazeFactory(false);
+		// test constructors
+		assertNotNull(factory);
+		assertNotNull(factoryTrue);
+		assertNotNull(factoryFalse);
+	
+	}
+	@Test
+	public void testMazeConfiguration(){
+		 assertNotNull(factory);
+//		 assertNotNull(height)
+//		 assertNotNull(mazecells)
+//		 assertNotNull(mazedists)
+//		 assertNotNull(rootnode)
+		
+		// make sure the start position != the end position
+		
+	}
+//
+//	@Test
+//	public void testMazeFactoryBoolean() {
+//		fail("Not yet implemented");
+//	}
+
+	@Test
+	public void testOrder() {
+		// need to call Order.deliver(MazeConfiguration mazeConfig
+		
+
+		
+	}
+	
+	@Test
+	public void testOneExit(){
+		//need StubOrder in this method to test it
+		int x;
+		int y;
+		//loop through every cell count exit positions
+		//there should only be one exit position
+		int count = 0;
+		for (x = 0; x < cells.width; x ++){
+			for (y = 0; y < cells.height; y++){
+				if (cells.isExitPosition(x, y) == true){
+					if (x - 1 < 0 || x + 1 >= cells.width || y - 1 < 0 || y + 1 >= cells.height){
+						count ++;
+					}
+				}
+			}
+		}
+		assertEquals(1, count);
+	}
+	
+	//distance test - check that you can get to the exit from every point in th emaze
+	
+	@Test
+	public void testCancel() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testWaitTillDelivered() {
+		fail("Not yet implemented");
+	}
+
+}

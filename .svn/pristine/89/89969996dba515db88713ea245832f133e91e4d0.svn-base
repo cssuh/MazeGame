@@ -1,0 +1,105 @@
+package falstad;
+
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+public class BasicRobotTest {
+
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testBasicRobot() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testRotate() {
+		fail("Not yet implemented");
+		//if we sense forward and it is > 0 then 
+	}
+
+	@Test
+	public void testMove() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetCurrentPosition() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testSetMaze() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testIsAtGoal() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testCanSeeGoal() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testIsInsideRoom() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testHasRoomSensor() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetCurrentDirection() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetBatteryLevel() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testSetBatteryLevel() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetEnergyForFullRotation() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetEnergyForStepForward() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testHasStopped() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testDistanceToObstacle() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testHasDistanceSensor() {
+		fail("Not yet implemented");
+	}
+
+}

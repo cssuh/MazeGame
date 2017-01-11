@@ -1,0 +1,68 @@
+package falstad;
+
+import generation.MazeConfiguration;
+import generation.MazeContainer;
+import generation.MazeFactory;
+import generation.Order;
+import generation.Factory;
+import generation.Order.Builder;
+import generation.MazeBuilder;
+
+
+public class StubOrder extends MazeController implements Order {
+	// what do I need in the order stub?
+	// How does MazeController interact with MazeFactory?
+	
+	// instantiate a MazeFactory and give it a OrderStub that describes what kind of 
+	// MazeConfiguration you want (which builder should be used, which skill level)
+	// MazeFactory will call OrderStub.deliver(X) to give the reference for the
+	// produced MazeConfiguration X to the OrderStub
+	// JUnit code should have a reference to its stubOrder
+	// Once I have a reference for X I can check its properties for correctness
+
+	private int skill;
+	private Builder builder;
+	private MazeConfiguration mazeConfig;
+	private boolean perfect;
+	int percentDone;
+	
+	public StubOrder(int skill, Builder builder, boolean perfect){
+		this.skill = skill;
+		this.builder = builder;
+		this.perfect = perfect;
+	}
+	
+	@Override
+	public int getSkillLevel(){
+		return skill;
+	}
+	
+	@Override
+	public Builder getBuilder(){
+		return builder;
+	}
+	
+	@Override
+	public boolean isPerfect(){
+		return perfect;
+	}
+
+	@Override
+	public void deliver(MazeConfiguration mazeConfig){
+		this.mazeConfig = mazeConfig;
+	}
+	
+	@Override
+	public void updateProgress(int percentage){
+		this.percentDone = percentage;
+	}
+	
+	public MazeConfiguration getMazeConfiguration(){
+		return mazeConfig;
+	}
+	
+	
+}
+
+
+

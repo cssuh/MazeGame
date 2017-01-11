@@ -1,0 +1,80 @@
+package falstad;
+
+import generation.MazeConfiguration;
+import generation.MazeContainer;
+import generation.MazeFactory;
+import generation.Order;
+import generation.Factory;
+import generation.Order.Builder;
+import generation.MazeBuilder;
+
+
+public class StubOrder extends MazeController implements Order {
+	// what do I need in the order stub?
+	// How does MazeController interact with MazeFactory?
+	
+	// instantiate a MazeFactory and give it a OrderStub that describes what kind of 
+	// MazeConfiguration you want (which builder should be used, which skill level)
+	// MazeFactory will call OrderStub.deliver(X) to give the reference for the
+	// produced MazeConfiguration X to the OrderStub
+	// JUnit code should have a reference to its stubOrder
+	// Once I have a reference for X I can check its properties for correctness
+	private MazePanel panel;
+	private MazeConfiguration mazeConfig;
+	private Factory factory;
+	private String filename;
+	
+	
+	public StubOrder(){
+		super() ;
+		setBuilder(Order.Builder.DFS); 
+		panel = new MazePanel() ;
+		mazeConfig = new MazeContainer();
+		factory = new MazeFactory(true) ;
+		filename = null;
+	}
+	
+	public StubOrder(Builder builder,int skill){
+		super();
+		setSkillLevel(skill);
+		setBuilder(builder);
+		panel = new MazePanel() ;
+		mazeConfig = new MazeContainer();
+		factory = new MazeFactory(true) ;
+		filename = null;
+		
+	}
+	
+	public void setOrder(){
+		
+		
+	}
+
+	//should these be private, protected, or public?
+	private MazeConfiguration configDFS;
+	private MazeConfiguration configPrim;
+	private MazeConfiguration configKruskal;
+	
+	public MazeConfiguration setMazeConfigurationDFS(){
+		MazeFactory DFSthing;
+		
+		DFSthing = new MazeFactory(true);
+		
+		
+		
+		
+		return null;
+	}
+	
+	public MazeConfiguration getMazeConfiguration(){
+		// this is used to hand the reference of an instance of MazeConfiguration
+		// to the JUnit test (MazeFactoryTest)
+		return null;
+	}
+	
+	
+	
+}
+
+
+

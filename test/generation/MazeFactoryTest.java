@@ -1,0 +1,144 @@
+package generation;
+
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import falstad.MazeApplication;
+import falstad.StubOrder;
+import generation.Order.Builder;
+
+public class MazeFactoryTest {
+
+	protected MazeFactory factory;
+	protected Order stub;
+	protected MazeFactory factorytest;
+	protected MazeFactory factoryTrue;
+	protected MazeFactory factoryFalse;
+	protected MazeFactory factoryDFS;
+	protected Order stubDFS;
+	protected MazeFactory factoryPrim;
+	protected Order stubPrim;
+	protected MazeFactory factoryKruskal;
+	protected Order stubKruskal;
+	
+	MazeConfiguration configuration;
+	Cells cells;
+	Distance distance;
+
+	@Before
+	public void setup(){
+		factoryDFS = new MazeFactory();
+		stubDFS = new StubOrder(1, Builder.DFS, true);
+		factoryPrim = new MazeFactory();
+		stubPrim = new StubOrder(1, Builder.Prim, true);
+		factoryKruskal = new MazeFactory();
+		stubKruskal = new StubOrder(1, Builder.Kruskal, true);
+		
+		factory = new MazeFactory();
+		stub = new StubOrder(1, Builder.Prim, true);
+	}
+	
+	/**
+	 * Test the constructors of MazeFactory - 
+	 * Once they are called, these factory objects should not be null.
+	 */
+	@Test
+	public void testMazeFactory() {
+		factorytest = new MazeFactory();
+		factoryTrue = new MazeFactory(true);
+		factoryFalse = new MazeFactory(false);
+
+		assertNotNull(factorytest);
+		assertNotNull(factoryTrue);
+		assertNotNull(factoryFalse);
+	}
+
+	/**
+	 * This method is to test the order method inside MazeFactory -
+	 * First the DFS, Prim's and Kruskal's algorithms are all tested
+	 * to make sure that they go through the switch statements and call
+	 * buildOrder() correctly.  Then, the last test is testing running consecutive
+	 * build threads before cancelling/waiting till delivered, which should
+	 * return false.
+	 */
+	@Test
+	public void testOrder() {
+		// need to call Order.deliver(MazeConfiguration mazeConfig
+		// case DFS
+		assertTrue(factoryDFS.order(stubDFS));
+		
+		// case Prim
+		assertTrue(factoryPrim.order(stubPrim));
+		
+		// case Kruskal
+		assertTrue(factoryKruskal.order(stubKruskal));
+		
+		// run consecutive build threads
+		factory.order(stubDFS);
+		assertFalse(factory.order(stubPrim));
+		
+	}
+	
+	/**
+	 * Test that the maze has one exit -
+	 * This method loops thorough each cell inside of the maze and checks if it is an 
+	 * exit position using isExitPosition().  Once it checks all the cells in the maze, 
+	 * it should check that the number of exit positions counted is only 1.
+	 */
+	
+	@Test
+	public void testOneExit(){
+		factory.order(stub); 
+		factory.waitTillDelivered(); 
+		configuration = ((StubOrder)stub).getMazeConfiguration();
+		cells = ((MazeContainer)configuration).getMazecells();
+		distance = ((MazeContainer)configuration).getMazedists();
+		int x;
+		int y;
+		//loop through every cell count exit positions
+		//there should only be one exit position
+		int count = 0;
+		for (x = 0; x < cells.width; x ++){
+			for (y = 0; y < cells.height; y++){
+				if (cells.isExitPosition(x, y) == true){
+					if (x - 1 < 0 || x + 1 >= cells.width || y - 1 < 0 || y + 1 >= cells.height){
+						count ++;
+					}
+				}
+			}
+		}
+		assertEquals(1, count);
+	}
+	
+	/**
+	 * Testing the Cancel method inside MazeFactory - 
+	 * First instantiate factory and stub, once stub is ordered, cancel the order.  
+	 * Then, builder and currentOrder should become null.
+	 */
+	@Test
+	public void testCancel() {
+		factory.order(stub);
+		factory.cancel();
+		assertNull(factory.builder);
+		assertNull(factory.currentOrder);
+	}
+
+	/**
+	 * Testing the waitTillDelivered() method inside MazeFactory - 
+	 * First instantiate factory and stub, once stub is ordered, call waitTillDelivered().
+	 * Then, builder and currentOrder should become null.
+	 */
+	@Test
+	public void testWaitTillDelivered() {
+		factory.order(stub);
+		factory.waitTillDelivered();
+		assertNull(factory.builder);
+		assertNull(factory.currentOrder);
+	}
+
+}

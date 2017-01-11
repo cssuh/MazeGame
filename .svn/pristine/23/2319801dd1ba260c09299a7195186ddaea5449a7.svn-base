@@ -1,0 +1,91 @@
+package generation;
+
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import falstad.MazeApplication;
+import falstad.StubOrder;
+import generation.Order.Builder;
+
+public class MazeFactoryTest {
+
+	private MazeFactory factory;
+	private MazeFactory factoryTrue;
+	private MazeFactory factoryFalse;
+	private StubOrder stub;
+	
+
+//	@Before
+//	public void setUp() throws Exception {
+//		boolean det = true;
+//		factory = new MazeFactory(det);
+//		stub = new StubOrder(1, Builder.DFS, true);
+//		stub.deliver(stub.getMazeConfiguration());
+//		factory.order(stub);
+//		factory.waitTillDelivered();
+//		
+//	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testMazeFactory() {
+		factory = new MazeFactory();
+		factoryTrue = new MazeFactory(true);
+		factoryFalse = new MazeFactory(false);
+		// test constructors
+		assertNotNull(factory);
+		assertNotNull(factoryTrue);
+		assertNotNull(factoryFalse);
+	
+	}
+	@Test
+	public void testMazeConfiguration(){
+		 assertNotNull(factory);
+//		 assertNotNull(height)
+//		 assertNotNull(mazecells)
+//		 assertNotNull(mazedists)
+//		 assertNotNull(rootnode)
+		
+		// make sure the start position != the end position
+		
+	}
+//
+//	@Test
+//	public void testMazeFactoryBoolean() {
+//		fail("Not yet implemented");
+//	}
+
+	@Test
+	public void testOrder() {
+		// need to call Order.deliver(MazeConfiguration mazeConfig
+		
+		//need StubOrder in this method to test it
+		boolean det = true;
+		factory = new MazeFactory(det);
+		stub = new StubOrder(1, Builder.Prim, true);
+		factory.order(stub);
+		factory.waitTillDelivered();
+		stub.deliver(stub.getMazeConfiguration());
+		
+		
+	}
+
+	@Test
+	public void testCancel() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testWaitTillDelivered() {
+		fail("Not yet implemented");
+	}
+
+}

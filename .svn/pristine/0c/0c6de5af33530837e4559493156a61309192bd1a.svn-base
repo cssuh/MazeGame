@@ -1,0 +1,92 @@
+package falstad;
+
+import falstad.Robot.Direction;
+import falstad.Robot.Turn;
+import generation.Distance;
+import generation.Order;
+import generation.Order.Builder;
+
+public class WallFollower implements RobotDriver {
+	
+	protected BasicRobot robot;
+	protected int width;
+	protected int height;
+	protected Distance distance;
+	protected int pathLength;
+	protected MazeController controller;
+		
+
+	public WallFollower(){
+		this.robot = null;
+		this.pathLength = 0;
+		this.distance = null;
+		this.width = 0;
+		this.height = 0;
+		controller = new MazeController();
+	}
+	
+	public WallFollower(Order.Builder builder){
+		this.robot = null;
+		this.pathLength = 0;
+		this.distance = null;
+		this.width = 0;
+		this.height = 0;
+		controller = new MazeController(builder);
+	}
+	
+	@Override
+	public void setRobot(Robot r) {
+		robot = ((BasicRobot) r);
+	}
+
+	@Override
+	public void setDimensions(int width, int height) {
+		this.width = width;
+		this.height = height;
+	}
+
+	@Override
+	public void setDistance(Distance distance) {
+		this.distance = distance;
+	}
+
+	@Override
+	public boolean drive2Exit() throws Exception {
+		while (this.robot.isAtGoal() != true){
+			if(this.robot.batteryLevel > 0){
+				return false;
+			}
+			else{
+				if(robot.distanceToObstacle(Direction.LEFT) == 0 && robot.distanceToObstacle(Direction.FORWARD) > 0){
+					robot.move(1, false);
+				}
+				else{
+					if(robot.distanceToObstacle(Direction.LEFT) > 0){
+						robot.rotate(Turn.LEFT);
+						robot.move(1, false);
+					}
+					else if(robot.distanceToObstacle(Direction.RIGHT) > 0){
+						robot.rotate(Turn.RIGHT);
+						robot.move(1, false);
+					}
+					else{
+						robot.rotate(Turn.AROUND);
+						robot.move(1, false);
+					}
+				}
+			}
+		}
+		return this.robot.isAtGoal();
+	}
+
+	@Override
+	public float getEnergyConsumption() {
+		return 2500 - this.robot.batteryLevel;
+	}
+
+	@Override
+	public int getPathLength() {
+		return pathLength;
+	}
+
+}

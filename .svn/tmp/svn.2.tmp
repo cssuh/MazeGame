@@ -1,0 +1,92 @@
+package generation;
+
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import falstad.MazeApplication;
+import falstad.StubOrder;
+import generation.Order.Builder;
+
+public class MazeFactoryTest {
+
+	private MazeFactory factory;
+	private MazeFactory factoryTrue;
+	private MazeFactory factoryFalse;
+	private StubOrder stub;
+	MazeConfiguration configuration;
+	Cells cells;
+	Distance distance;
+	
+
+	/**
+	 * Test the constructors of MazeFactory - 
+	 * Once they are called, these factory objects should become null.
+	 */
+	@Test
+	public void testMazeFactory() {
+		factory = new MazeFactory();
+		factoryTrue = new MazeFactory(true);
+		factoryFalse = new MazeFactory(false);
+		// test constructors
+		assertNotNull(factory);
+		assertNotNull(factoryTrue);
+		assertNotNull(factoryFalse);
+	
+	}
+	
+	
+	/**
+	 * This method is to test the order method inside MazeFactory - 
+	 * First the DFS, Prim's and Kruskal's algorithms are all tested
+	 * to make sure that they can go through the switch statements and 
+	 * call buildOrder() correctly.  Then, the last test is testing running
+	 * consecutive build threads before cancelling/waiting till delivered
+	 * which should return false.
+	 */
+	@Test
+	public void testOrder() {
+		//case DFS
+		MazeFactory factoryDFS = new MazeFactory();
+		Order stubDFS = new StubOrder
+
+		
+	}
+	
+	@Test
+	public void testOneExit(){
+		//need StubOrder in this method to test it
+		int x;
+		int y;
+		//loop through every cell count exit positions
+		//there should only be one exit position
+		int count = 0;
+		for (x = 0; x < cells.width; x ++){
+			for (y = 0; y < cells.height; y++){
+				if (cells.isExitPosition(x, y) == true){
+					if (x - 1 < 0 || x + 1 >= cells.width || y - 1 < 0 || y + 1 >= cells.height){
+						count ++;
+					}
+				}
+			}
+		}
+		assertEquals(1, count);
+	}
+	
+	//distance test - check that you can get to the exit from every point in th emaze
+	
+	@Test
+	public void testCancel() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testWaitTillDelivered() {
+		fail("Not yet implemented");
+	}
+
+}

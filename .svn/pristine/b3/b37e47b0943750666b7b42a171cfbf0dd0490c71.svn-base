@@ -1,0 +1,148 @@
+package falstad;
+
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import falstad.Robot.Direction;
+import falstad.Robot.Turn;
+import generation.CardinalDirection;
+import generation.Cells;
+import generation.MazeConfiguration;
+import generation.MazeFactory;
+import generation.Order;
+
+public class BasicRobotTest {
+	
+	private BasicRobot robot;
+	private MazeController maze;
+	private CardinalDirection cardDir;
+	private Cells cell;
+	private MazeFactory factory;
+	private Order stub;
+	private MazeConfiguration mazeConfig;
+
+	@Before
+	public void setUp() throws Exception {
+		robot = new BasicRobot();
+		maze = new MazeController();
+		cardDir = CardinalDirection.East;
+		factory = new MazeFactory();
+		stub = new StubOrder();
+	}
+
+
+	@Test
+	public void testBasicRobot() {
+		assertNotNull(robot);
+		
+		assertNull(robot.cell);
+		assertNull(robot.maze);
+		assertFalse(robot.stopped);
+		assertEquals(0, robot.currentPosition[0]);
+		assertEquals(0, robot.currentPosition[1]);
+	}
+	
+	
+
+	@Test
+	public void testRotate() {
+		//if we sense forward and it is > 0 then 
+		//test rotate
+		this.robot.setMaze(this.maze);
+		
+		this.cardDir = robot.direction;
+		this.robot.rotate(Turn.RIGHT);
+		assertEquals(cardDir.rotateClockwise(), this.robot.direction);
+		
+		this.cardDir = robot.direction;
+		this.robot.rotate(Turn.LEFT);
+		assertEquals(cardDir.rotateCounterClockwise(), this.robot.direction);
+		
+		this.cardDir = robot.direction;
+		this.robot.rotate(Turn.AROUND);
+		assertEquals(cardDir.oppositeDirection(), this.robot.direction);
+		
+		this.cardDir = robot.direction;
+		this.robot.setBatteryLevel(0);
+		this.robot.rotate(Turn.RIGHT);
+		assertTrue(this.robot.hasStopped());
+	}
+
+	@Test
+	public void testGetCurrentPosition() throws Exception {
+		int[] array = robot.currentPosition;
+		assertEquals(array, robot.getCurrentPosition());
+	}
+
+	@Test
+	public void testIsAtGoal() {
+		factory.order(stub);
+		factory.waitTillDelivered();
+		mazeConfig = ((StubOrder) stub).getMazeConfiguration();
+		cell = mazeConfig.getMazecells();
+		robot.setMazeCells(cell);
+		
+		int x = 0;
+		int y = 0;
+		for(int i = 0; i < cell.width; i++){
+			for(int j = 0; i < cell.height; j++){
+				if (cell.isExitPosition(i, j)){
+					x = i;
+					y = j;
+				}
+			}
+		}
+		this.robot.currentPosition[0] = x;
+		this.robot.currentPosition[1] = y;
+		assertTrue(this.robot.isAtGoal());
+	}
+
+	@Test
+	public void testGetCurrentDirection() {
+		this.robot.setMaze(this.maze);
+		cardDir = robot.direction;
+		assertEquals(cardDir, robot.getCurrentDirection());
+	}
+
+	@Test
+	public void testGetBatteryLevel() {
+		float batteryLvl = robot.batteryLevel;
+		assertEquals(batteryLvl, robot.getBatteryLevel(), batteryLvl);
+		
+	}
+
+	@Test
+	public void testGetEnergyForFullRotation() {
+		assertEquals(12, robot.getEnergyForFullRotation(), 12);
+	}
+
+	@Test
+	public void testGetEnergyForStepForward() {
+		assertEquals(5, robot.getEnergyForStepForward(), 5);
+	}
+
+	@Test
+	public void testHasStopped() {
+		this.cardDir = robot.direction;
+		this.robot.setBatteryLevel(0);
+		this.robot.rotate(Turn.RIGHT);
+		assertTrue(this.robot.hasStopped());
+	}
+
+	@Test
+	public void testDistanceToObstacle() {
+		//Test if the sensor returns the correct direction
+	}
+
+	@Test
+	public void testHasDistanceSensor() {
+		assertTrue(robot.hasDistanceSensor(Direction.LEFT));
+		assertTrue(robot.hasDistanceSensor(Direction.RIGHT));
+		assertTrue(robot.hasDistanceSensor(Direction.FORWARD));
+		assertTrue(robot.hasDistanceSensor(Direction.BACKWARD));
+	}
+
+}

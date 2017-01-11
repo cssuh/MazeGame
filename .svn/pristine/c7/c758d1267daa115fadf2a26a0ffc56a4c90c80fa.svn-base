@@ -1,0 +1,15 @@
+package generation;
+
+public class MazeBuilderKruskal extends MazeBuilder implements Runnable{
+	public MazeBuilderKruskal() {
+		super();
+		System.out.println("MazeBuilderPrim uses Prim's algorithm to generate maze.");
+	}
+	
+	public MazeBuilderKruskal(boolean det) {
+		super(det);
+		System.out.println("MazeBuilderPrim uses Prim's algorithm to generate maze.");
+	}
+	
+
+}

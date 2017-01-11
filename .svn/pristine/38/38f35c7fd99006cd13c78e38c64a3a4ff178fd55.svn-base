@@ -1,0 +1,77 @@
+package falstad;
+
+import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import generation.Cells;
+import generation.Distance;
+import generation.MazeConfiguration;
+import generation.Order;
+
+public class WallFollowerTest {
+	
+	private BasicRobot robot;
+	private int width;
+	private int height;
+	private Distance distance;
+	private int pathLength;
+	private MazeConfiguration mazeConfig;
+	
+	private WallFollower driver1;
+	private WallFollower driver2;
+	private MazeController maze;
+	
+	
+	@Before
+	public void setUp() throws Exception {
+		driver1 = new WallFollower();
+		driver2 = new WallFollower(Order.Builder.Kruskal);
+		maze = new MazeController(driver1);
+		
+	}
+
+	@Test
+	public void testWallFollower() {
+		
+	}
+
+	@Test
+	public void testWallFollowerBuilder() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testSetRobot() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testSetDimensions() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testSetDistance() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testDrive2Exit() {
+		cell = new Cells(input);
+		
+		driver1.setDimensions()
+	}
+
+	@Test
+	public void testGetEnergyConsumption() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetPathLength() {
+		fail("Not yet implemented");
+	}
+
+}

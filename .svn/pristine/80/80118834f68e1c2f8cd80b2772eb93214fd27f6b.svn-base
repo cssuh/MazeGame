@@ -1,0 +1,71 @@
+package falstad;
+
+import generation.CardinalDirection;
+import generation.Distance;
+import generation.Order;
+
+public class Wizard implements RobotDriver {
+
+	protected BasicRobot robot;
+	protected Distance distance;
+	protected int pathLength;
+	protected MazeController maze;
+	protected CardinalDirection cardDir;
+	protected int width;
+	protected int height;
+	
+	public Wizard(){
+		this.robot = null;
+		this.pathLength = 0;
+		this.distance = null;
+		this.width = 0;
+		this.height = 0;
+		controller = new MazeController();
+	}
+	
+	public Wizard(Order.Builder builder){
+		this.robot = null;
+		this.pathLength = 0;
+		this.distance = null;
+		this.width = 0;
+		this.height = 0;
+		controller = new MazeController(builder);
+	}
+	
+	@Override
+	public void setRobot(Robot r) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setDimensions(int width, int height) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setDistance(Distance distance) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public boolean drive2Exit() throws Exception {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public float getEnergyConsumption() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int getPathLength() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

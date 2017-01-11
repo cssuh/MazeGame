@@ -1,0 +1,147 @@
+package falstad;
+
+import static org.junit.Assert.*;
+
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import falstad.Robot.Turn;
+import generation.CardinalDirection;
+import generation.Cells;
+
+public class BasicRobotTest {
+	
+	private BasicRobot robot;
+	private MazeController maze;
+	private CardinalDirection cardDir;
+	private Cells cells;
+
+	@Before
+	public void setUp() throws Exception {
+		robot = new BasicRobot();
+		maze = new MazeController();
+		cardDir = CardinalDirection.East;
+	}
+
+
+	@Test
+	public void testBasicRobot() {
+		assertNotNull(robot);
+		
+		assertNull(robot.cell);
+		assertNull(robot.maze);
+		assertFalse(robot.stopped);
+		assertEquals(0, robot.currentPosition[0]);
+		assertEquals(0, robot.currentPosition[1]);
+	}
+	
+	
+
+	@Test
+	public void testRotate() {
+		fail("Not yet implemented");
+		//if we sense forward and it is > 0 then 
+		//test rotate
+		this.robot.setMaze(this.maze);
+		
+		this.cardDir = robot.direction;
+		this.robot.rotate(Turn.RIGHT);
+		assertEquals(cardDir.rotateClockwise(), this.robot.direction);
+		
+		this.cardDir = robot.direction;
+		this.robot.rotate(Turn.LEFT);
+		assertEquals(cardDir.rotateCounterClockwise(), this.robot.direction);
+		
+		this.cardDir = robot.direction;
+		this.robot.rotate(Turn.AROUND);
+		assertEquals(cardDir.oppositeDirection(), this.robot.direction);
+		
+		this.cardDir = robot.direction;
+		this.robot.setBatteryLevel(1);
+		this.robot.rotate(Turn.RIGHT);
+		assertTrue(this.robot.hasStopped());
+	}
+	
+	@Test
+	public void testGetMethods(){
+		
+	}
+
+	@Test
+	public void testMove() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetCurrentPosition() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testSetMaze() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testIsAtGoal() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testCanSeeGoal() {
+		//test can see goal
+	}
+
+	@Test
+	public void testIsInsideRoom() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testHasRoomSensor() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetCurrentDirection() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetBatteryLevel() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testSetBatteryLevel() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetEnergyForFullRotation() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testGetEnergyForStepForward() {
+		fail("Not yet implemented");
+	}
+
+	@Test
+	public void testHasStopped() {
+		//if battery is 0 then check has stopped
+		//when it runs into a wall check has stopped
+	}
+
+	@Test
+	public void testDistanceToObstacle() {
+		//Test if the sensor returns the correct direction
+	}
+
+	@Test
+	public void testHasDistanceSensor() {
+		fail("Not yet implemented");
+	}
+
+}

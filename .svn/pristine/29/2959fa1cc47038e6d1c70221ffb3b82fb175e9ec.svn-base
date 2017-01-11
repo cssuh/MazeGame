@@ -1,0 +1,292 @@
+package falstad;
+
+import generation.CardinalDirection;
+import generation.Cells;
+import generation.MazeConfiguration;
+
+/**
+ * BasicRobot
+ *
+ * Responsibilities: rotate and move in the maze, recognize if it is at the goal, 
+ * calculate distance to the goal and to the exit, use sensors to recognize if it is
+ * inside of a room, manipulate its battery levels and make sure that there is 
+ * enough battery charge to make movements and turns.
+ *
+ * Collaborators: Robot, Cells, MazeController
+ * @author cssuh
+ */
+
+public class BasicRobot implements Robot {
+	protected CardinalDirection direction;
+	protected MazeController maze;
+	protected int[] currentPosition;
+	protected float batteryLevel;
+	protected Cells cell;
+	protected boolean stopped;
+	private RobotDriver driver;
+	
+	public BasicRobot(){
+		//TODO create constructor
+		//set initial direction for direction field
+		stopped = false;
+		currentPosition = new int[2];
+		currentPosition[0] = 0;
+		currentPosition[1] = 0;
+		batteryLevel = 2500;
+		direction = CardinalDirection.East;
+		
+	}
+	@Override
+	public void rotate(Turn turn) {
+		switch(turn){
+			case LEFT:
+				if (batteryLevel >= 3){
+					direction = direction.rotateCounterClockwise();
+					batteryLevel -= 3;
+				}
+				else{
+					stopped = true;
+				}
+				break;
+			case RIGHT:
+				if (batteryLevel >= 3){
+					direction = direction.rotateClockwise();
+					batteryLevel -= 3;
+
+				}
+				else{
+					stopped = true;
+				}
+				break;
+			case AROUND:
+				if (batteryLevel >= 6){
+					direction = direction.oppositeDirection();
+					batteryLevel -= 6;
+
+				}
+				else{
+					stopped = true;
+				}
+				break;
+		}
+
+	}
+
+	@Override
+	public void move(int distance, boolean manual) {
+		
+		while (distance > 0){
+			currentPosition = this.maze.getCurrentPosition();
+			if (batteryLevel >= 5){
+				if(manual == true){
+					distance = 1;
+				}
+				if (this.distanceToObstacle(Direction.FORWARD) > 0){
+					switch(direction){
+					case North:
+						this.currentPosition[1]--;
+						break;
+					case South:
+						this.currentPosition[1]++;
+						break;
+					case East:
+						this.currentPosition[0]++;
+						break;
+					case West:
+						this.currentPosition[0]--;
+						break;
+					}
+					this.maze.setCurrentPosition(currentPosition[0],currentPosition[1]);
+					this.batteryLevel -= 5;
+					distance--;
+				}
+				else{
+					stopped = true;
+				}
+					
+			}
+			else{
+				stopped = true;
+			}
+		}
+		
+	}
+
+	@Override
+	public int[] getCurrentPosition() throws Exception {
+		return currentPosition;
+	}
+
+	@Override
+	public void setMaze(MazeController maze) {
+		this.maze = maze;
+		this.cell = new Cells(this.maze.mazeConfig.getWidth(), this.maze.mazeConfig.getHeight());
+		cell = this.maze.mazeConfig.getMazecells();
+		currentPosition = this.maze.getCurrentPosition();
+		
+		int[] currentDirection = new int[2];
+		currentDirection = this.direction.getDirection();
+		if(currentDirection[0] == 0 && currentDirection[1] == -1){
+			direction = CardinalDirection.North;
+		}
+		if (currentDirection[0] == 1 && currentDirection[1] == 0){
+			direction = CardinalDirection.East;
+		}
+		if (currentDirection[0] == 0 && currentDirection[1] == 1){
+			direction = CardinalDirection.South;
+		}
+		if(currentDirection[0]== -1 && currentDirection[1] == 0){
+			direction = CardinalDirection.West;
+		}
+	}
+
+	@Override
+	public boolean isAtGoal() {
+		return cell.isExitPosition(this.currentPosition[0], this.currentPosition[1]);
+		
+	}
+
+	@Override
+	public boolean canSeeGoal(Direction direction) throws UnsupportedOperationException {
+		if(this.hasDistanceSensor(direction) == true){
+			if(this.distanceToObstacle(direction) == Integer.MAX_VALUE){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+		else{
+			throw new UnsupportedOperationException();
+		}
+	}
+
+	@Override
+	public boolean isInsideRoom() throws UnsupportedOperationException {
+		return cell.isInRoom(currentPosition[0], currentPosition[1]);
+		// how do we set cell??
+	}
+
+	@Override
+	public boolean hasRoomSensor() {
+		return true;
+	}
+
+	@Override
+	public CardinalDirection getCurrentDirection() {
+		return direction;
+	}
+
+	@Override
+	public float getBatteryLevel() {
+		return batteryLevel;
+	}
+
+	@Override
+	public void setBatteryLevel(float level) {
+		batteryLevel = level;
+	}
+
+	@Override
+	public float getEnergyForFullRotation() {
+		return 12;
+	}
+
+	@Override
+	public float getEnergyForStepForward() {
+		return 5;
+	}
+
+	@Override
+	public boolean hasStopped() {
+		if(batteryLevel == 0){
+			return true;
+		}
+		else{
+			// did it run into an obstacle? then return true
+			// else return false
+			if(stopped == true){
+				return true;
+			}
+			else{
+				return false;
+			}
+		}
+	}
+
+	@Override
+	public int distanceToObstacle(Direction direction) throws UnsupportedOperationException {
+		if(this.hasDistanceSensor(direction)){
+			this.setBatteryLevel(this.batteryLevel -1);
+			
+			CardinalDirection cardDir1;
+			if(direction == Direction.LEFT){
+				cardDir1 = this.direction.rotateCounterClockwise();
+			}
+			else if(direction == Direction.RIGHT){
+				cardDir1 = this.direction.rotateClockwise();
+			}
+			else if(direction == Direction.BACKWARD){
+				cardDir1 = this.direction.oppositeDirection();
+			}
+			else{
+				cardDir1 = this.direction;
+			}
+			int counter = 0;
+			int x = this.maze.getCurrentPosition()[0];
+			int y = this.maze.getCurrentPosition()[1];
+			
+			while(true){
+				if(x < 0 || x >= cell.width || y < 0 || y >= cell.height){
+					return Integer.MAX_VALUE;
+				}
+				else{
+					switch(cardDir1){
+					case North:
+						if(this.cell.hasWall(x, y, CardinalDirection.North)){
+							return counter;
+						}
+						y--;
+						break;
+					case South:
+						if(this.cell.hasWall(x, y, CardinalDirection.South)){
+							return counter;
+						}
+						y++;
+						break;
+					case East:
+						if(this.cell.hasWall(x, y, CardinalDirection.East)){
+							return counter;
+						}
+						x++;
+						break;
+					case West:
+						if(this.cell.hasWall(x, y, CardinalDirection.West)){
+							return counter;
+						}
+						x--;
+						break;
+					}
+					
+				}
+				counter++;
+			}
+		}
+		else{
+			throw new UnsupportedOperationException();
+		}
+	}
+
+	public void setDriver(RobotDriver drive){
+		driver = drive;
+	}
+	@Override
+	public boolean hasDistanceSensor(Direction direction) {
+		return true;
+	}
+	
+	public void setMazeCells(Cells cells){
+		cell = cells;
+	}
+
+}
